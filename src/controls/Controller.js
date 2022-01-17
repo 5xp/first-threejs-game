@@ -60,9 +60,8 @@ class Controller {
         const movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0;
         const movementY = event.movementY || event.mozMovementY || event.webkitMovementY || 0;
 
-        // TODO use sensitivity values
-        this.object.rotation.y -= movementX / 500;
-        this.object.rotation.x -= movementY / 500;
+        this.object.rotation.y -= movementX * THREE.MathUtils.DEG2RAD * this.mouseYaw * this.mouseSensitivity;
+        this.object.rotation.x -= movementY * THREE.MathUtils.DEG2RAD * this.mousePitch * this.mouseSensitivity;
 
         // clamp pitch
         if (this.object.rotation.x > Math.PI / 2 - 0.01) {
