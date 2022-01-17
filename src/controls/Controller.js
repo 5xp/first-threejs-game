@@ -41,6 +41,8 @@ class Controller {
     this.mouseYaw = 0.022;
     this.mousePitch = 0.022;
     this.mouseSensitivity = 3;
+    this.lastMouseX = 0;
+    this.lastMouseY = 0;
 
     // input
     document.addEventListener("keydown", event => {
@@ -57,8 +59,20 @@ class Controller {
 
     this.domElement.addEventListener("mousemove", event => {
       if (document.pointerLockElement === this.domElement) {
-        const movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0;
-        const movementY = event.movementY || event.mozMovementY || event.webkitMovementY || 0;
+        let movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0;
+        let movementY = event.movementY || event.mozMovementY || event.webkitMovementY || 0;
+
+        // hacky fix for bug where movementX or movementY randomly spike
+        if (Math.abs(movementX - this.lastMouseX) > 70) {
+          movementX = 0;
+        }
+
+        if (Math.abs(movementY - this.lastMouseY) > 30) {
+          movementY = 0;
+        }
+
+        this.lastMouseX = movementX;
+        this.lastMouseY = movementY;
 
         this.object.rotation.y -= movementX * THREE.MathUtils.DEG2RAD * this.mouseYaw * this.mouseSensitivity;
         this.object.rotation.x -= movementY * THREE.MathUtils.DEG2RAD * this.mousePitch * this.mouseSensitivity;
