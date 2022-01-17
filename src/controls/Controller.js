@@ -75,24 +75,11 @@ class Controller {
   }
 
   updateControls() {
-    let moveLeft, moveRight, moveForward, moveBack;
-    [moveLeft, moveRight, moveForward, moveBack] = [0, 0, 0, 0];
+    let forward = this.keyStates["KeyW"] || 0 - this.keyStates["KeyS"] || 0;
+    let side = this.keyStates["KeyD"] || 0 - this.keyStates["KeyA"] || 0;
 
-    if (this.keyStates["KeyW"]) {
-      moveForward = 1;
-    }
-    if (this.keyStates["KeyS"]) {
-      moveBack = 1;
-    }
-    if (this.keyStates["KeyA"]) {
-      moveLeft = 1;
-    }
-    if (this.keyStates["KeyD"]) {
-      moveRight = 1;
-    }
-
-    const forward = (moveForward - moveBack) * this.fMove;
-    const side = (moveRight - moveLeft) * this.sMove;
+    forward *= this.fMove;
+    side *= this.sMove;
 
     this.wishVelocity.x = this.getForwardVector().x * forward + this.getSideVector().x * side;
     this.wishVelocity.y = 0;
