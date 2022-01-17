@@ -1,9 +1,10 @@
 import * as THREE from "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.module.js";
 import { Controller } from "./controls/Controller.js";
+import Stats from "../libs/stats.module.js";
 
 const clock = new THREE.Clock();
 const stepsPerFrame = 5;
-let scene, camera, renderer, controls, topDownCamera;
+let scene, camera, renderer, controls, stats;
 
 init();
 update();
@@ -31,6 +32,12 @@ function init() {
   camera.position.set(0, 64, 0);
 
   window.addEventListener("resize", onWindowResize);
+
+  // fps panel
+  stats = new Stats();
+  stats.domElement.style.position = "absolute";
+  stats.domElement.style.top = "0px";
+  document.body.appendChild(stats.domElement);
 }
 
 function update() {
@@ -42,6 +49,8 @@ function update() {
   for (let i = 0; i < stepsPerFrame; i++) {
     controls.updatePlayer(deltaTime);
   }
+
+  stats.update();
 
   renderer.render(scene, camera);
 }
