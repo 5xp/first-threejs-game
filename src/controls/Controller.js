@@ -28,12 +28,15 @@ class Controller {
     this.jumpImpulse = Math.sqrt(2 * this.gravity * this.jumpHeight);
 
     // controller
-    // this.playerCollider = new Box3(1, 1);
     this.velocity = new THREE.Vector3();
     this.wishDirection = new THREE.Vector3();
     this.wishVelocity = new THREE.Vector3();
     this.playerDirection = new THREE.Vector3();
-    this.playerHeight = 64;
+    this.playerHeight = 72;
+    this.playerCrouchedHeight = 32;
+    this.playerEyeLevel = 64;
+    this.playerCrouchedEyeLevel = 28;
+    this.playerWidth = 32;
     this.onGround = false;
     this.keyStates = {};
 
@@ -62,12 +65,17 @@ class Controller {
         let movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0;
         let movementY = event.movementY || event.mozMovementY || event.webkitMovementY || 0;
 
+        const differenceX = movementX - this.lastMouseX;
+        const differenceY = movementY - this.lastMouseY;
+
         // hacky fix for bug where movementX or movementY randomly spike
-        if (Math.abs(movementX - this.lastMouseX) > 70) {
+        if (Math.abs(differenceX) > 100) {
+          console.log("movementX spike: " + differenceX);
           movementX = 0;
         }
 
-        if (Math.abs(movementY - this.lastMouseY) > 30) {
+        if (Math.abs(differenceY) > 30) {
+          console.log("movementY spike: " + differenceY);
           movementY = 0;
         }
 
